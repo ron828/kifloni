@@ -7,19 +7,22 @@ import correct from './correct-answer.mp3'
 class Game extends React.Component {
     constructor() {
         super()
-        this.nStart = 1
+
+        this.nStart = 3
         this.nEnd = 12
-        this.totalDrills = 78
-        this.nSolutions = 4
+        this.nSolutions = 3
         this.solutionsMaxDistance = 20
         this.timeToSolve = 10
         this.currentDrillWrong = false
         this.timerHandler = null
         this.drills = []
+        this.mistakes = []
         this.quackSound = new Audio(quack)
         this.correctSound = new Audio(correct)
-        this.startTime = performance.now()
-        this.state = {
+        this.startTime = null
+
+        this.cleanState = {
+            totalDrills: 0,
             currentDrill: {},
             drillSolutions: [],
             correctAnswers: 0,
@@ -27,21 +30,55 @@ class Game extends React.Component {
             gameOver: false,
             totalTime: 0
         }
+
+        this.state = this.cleanState
     }
 
     componentDidMount() {
         this.quackSound.load()
         this.correctSound.load()
+        this.initGame()
+    }
+
+    startMistakesGame() {
+        this.setState(this.cleanState)
+        this.drills = this.mistakes
+        this.mistakes = []
+        this.currentDrillWrong = false
+        this.timerHandler = null
+        this.startTime = performance.now()
+        this.setState({
+            totalDrills: this.drills.length
+        },
+            this.getNextDrill
+        )
+    }
+
+    initGame() {
+        this.drills = []
+        this.mistakes = []
+        this.currentDrillWrong = false
+        this.timerHandler = null
+        this.startTime = performance.now()
         for (let i = this.nStart; i <= this.nEnd; i++) {
             for (let j = i; j <= this.nEnd; j++) {
-                let drill = { a: i, b: j}
+                let drill = { a: i, b: j }
                 if (Math.round(Math.random())) {
-                    drill = { a: j, b: i}
+                    drill = { a: j, b: i }
                 }
                 this.drills.push(drill)
             }
         }
-        this.getNextDrill()
+        this.setState({
+            totalDrills: this.drills.length
+        },
+            this.getNextDrill
+        )
+    }
+
+    resetGame() {
+        this.setState(this.cleanState)
+        this.initGame()
     }
 
     getRandomDrill() {
@@ -134,7 +171,7 @@ class Game extends React.Component {
             else {
                 this.correctSound.currentTime = 0
             }
-        
+
             // remove drill from pool
             if (timeLeft > 0 && !this.currentDrillWrong) {
                 this.drills = this.drills.filter(d => (d.a !== drill.a) || (d.b !== drill.b))
@@ -142,12 +179,18 @@ class Game extends React.Component {
             }
             // go to next drill but keep this on in pool
             else {
+                if (this.mistakes.indexOf(drill) === -1) {
+                    this.mistakes.push(drill)
+                }
                 this.getNextDrill()
             }
-            
+
         }
         // wrong answer
         else {
+            if (this.mistakes.indexOf(drill) === -1) {
+                this.mistakes.push(drill)
+            }
             this.currentDrillWrong = true
             this.quackSound.play()
             button.style.backgroundColor = "#FEC8D8"
@@ -159,8 +202,9 @@ class Game extends React.Component {
 
     render() {
         if (this.state.gameOver) {
-            return <GameOver totalTime={this.state.totalTime}/>
+            return <GameOver totalTime={this.state.totalTime} mistakes={this.mistakes.length} restart={() => this.resetGame()} restartMistakes={() => this.startMistakesGame()} />
         }
+        const totalDrills = this.state.totalDrills
         const drill = this.state.currentDrill
         const solutions = this.state.drillSolutions.map(n => {
             return (
@@ -174,10 +218,12 @@ class Game extends React.Component {
         }
         return (
             <section className="game-container">
-                <div className="drill">{drill.a} &#215; {drill.b} = ?</div>
-                <div>{solutions}</div>
-                <progress id="progress" value={correctAnswers} max={this.totalDrills}></progress>
-                <div id="timer">{timeLeft}</div>
+                <div className="card">
+                    <div className="drill">{drill.a} &#215; {drill.b} = ?</div>
+                    <div id="solutions">{solutions}</div>
+                    <progress id="progress" value={correctAnswers} max={totalDrills}></progress>
+                    <div id="timer">{timeLeft}</div>
+                </div>
             </section>
         )
     }

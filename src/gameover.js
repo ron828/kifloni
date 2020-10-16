@@ -17,8 +17,15 @@ class GameOver extends React.Component {
     render() {
         return (
             <section className="gameover-container">
-                <span role="img" aria-label="partying smiley">&#129395;</span>
-                <div id="total-time">זמן כולל: {this.props.totalTime} שניות</div>
+                <div className="card">
+                    <span role="img" aria-label="partying smiley">&#128526;</span>
+                    <div id="total-time">זמן כולל: {this.props.totalTime} שניות</div>
+                    <div id="mistakes">טעויות: {this.props.mistakes}</div>
+                    <div className="buttons">
+                        <button onClick={this.props.restart}>משחק חדש</button>
+                        {this.props.mistakes > 0 ? <button onClick={this.props.restartMistakes}>חזרה על טעויות</button> : ''}
+                    </div>
+                </div>
             </section>
 
         )

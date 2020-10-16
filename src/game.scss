@@ -11,16 +11,24 @@
         font-size: 2rem;
     }
 
+    #solutions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+
     .button-answer {
         font-size: 1.2rem;
-        width: 3rem;
-        height: 3rem;
-        margin: 1rem;
-        cursor: pointer;
-        transition: background-color 1s;
+        min-width: 4rem;
+        min-height: 3rem;
     }
 
     progress {
         margin: 1.8rem;
+    }
+
+    #timer {
+        margin-bottom: 1rem;
     }
 }
