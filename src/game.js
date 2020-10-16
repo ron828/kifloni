@@ -1,29 +1,44 @@
 import React from 'react'
+import GameOver from './gameover'
 import './game.scss'
+import quack from './quack.mp3'
+import correct from './correct-answer.mp3'
 
 class Game extends React.Component {
     constructor() {
         super()
         this.nStart = 1
         this.nEnd = 12
-        this.totalDrills = 144
-        this.nSolutions = 5
+        this.totalDrills = 78
+        this.nSolutions = 4
         this.solutionsMaxDistance = 20
         this.timeToSolve = 10
+        this.currentDrillWrong = false
         this.timerHandler = null
         this.drills = []
+        this.quackSound = new Audio(quack)
+        this.correctSound = new Audio(correct)
+        this.startTime = performance.now()
         this.state = {
             currentDrill: {},
             drillSolutions: [],
             correctAnswers: 0,
-            timeLeft: this.timeToSolve
+            timeLeft: this.timeToSolve,
+            gameOver: false,
+            totalTime: 0
         }
     }
 
     componentDidMount() {
+        this.quackSound.load()
+        this.correctSound.load()
         for (let i = this.nStart; i <= this.nEnd; i++) {
-            for (let j = this.nStart; j <= this.nEnd; j++) {
-                this.drills.push({ a: i, b: j })
+            for (let j = i; j <= this.nEnd; j++) {
+                let drill = { a: i, b: j}
+                if (Math.round(Math.random())) {
+                    drill = { a: j, b: i}
+                }
+                this.drills.push(drill)
             }
         }
         this.getNextDrill()
@@ -73,6 +88,17 @@ class Game extends React.Component {
         if (this.timerHandler) {
             clearInterval(this.timerHandler)
         }
+        if (this.drills.length === 0) {
+            let end = performance.now()
+            let timeElapsed = end - this.startTime
+            timeElapsed = Math.floor(timeElapsed / 1000)
+            this.setState({
+                gameOver: true,
+                totalTime: timeElapsed
+            })
+            return
+        }
+        this.currentDrillWrong = false
         let drill = this.getRandomDrill()
         let solutions = this.getPossibleSolutions(drill)
         this.setState({
@@ -102,8 +128,15 @@ class Game extends React.Component {
         const drill = this.state.currentDrill
         const answer = drill.a * drill.b
         if (n === answer) {
+            if (this.correctSound.paused) {
+                this.correctSound.play()
+            }
+            else {
+                this.correctSound.currentTime = 0
+            }
+        
             // remove drill from pool
-            if (timeLeft > 0) {
+            if (timeLeft > 0 && !this.currentDrillWrong) {
                 this.drills = this.drills.filter(d => (d.a !== drill.a) || (d.b !== drill.b))
                 this.setState({ correctAnswers: this.state.correctAnswers + 1 }, this.getNextDrill)
             }
@@ -115,6 +148,8 @@ class Game extends React.Component {
         }
         // wrong answer
         else {
+            this.currentDrillWrong = true
+            this.quackSound.play()
             button.style.backgroundColor = "#FEC8D8"
             setTimeout(() => {
                 button.style.backgroundColor = null
@@ -123,6 +158,9 @@ class Game extends React.Component {
     }
 
     render() {
+        if (this.state.gameOver) {
+            return <GameOver totalTime={this.state.totalTime}/>
+        }
         const drill = this.state.currentDrill
         const solutions = this.state.drillSolutions.map(n => {
             return (
