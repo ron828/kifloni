@@ -9,11 +9,14 @@ class Game extends React.Component {
         this.totalDrills = 144
         this.nSolutions = 5
         this.solutionsMaxDistance = 20
+        this.timeToSolve = 10
+        this.timerHandler = null
         this.drills = []
         this.state = {
             currentDrill: {},
             drillSolutions: [],
-            correctAnswers: 0
+            correctAnswers: 0,
+            timeLeft: this.timeToSolve
         }
     }
 
@@ -67,41 +70,76 @@ class Game extends React.Component {
     }
 
     getNextDrill() {
+        if (this.timerHandler) {
+            clearInterval(this.timerHandler)
+        }
         let drill = this.getRandomDrill()
         let solutions = this.getPossibleSolutions(drill)
         this.setState({
             currentDrill: drill,
-            drillSolutions: solutions
-        })
+            drillSolutions: solutions,
+            timeLeft: this.timeToSolve
+        },
+            () => {
+                this.timerHandler = setInterval(() => this.tickDown(), 1000)
+            }
+        )
     }
 
-    checkAnswer(n) {
+    tickDown() {
+        const time = this.state.timeLeft
+        if (time <= 0) {
+            clearInterval(this.timerHandler)
+        }
+        else {
+            this.setState({ timeLeft: time - 1 })
+        }
+    }
+
+    checkAnswer(event, n) {
+        const timeLeft = this.state.timeLeft
+        var button = event.target
         const drill = this.state.currentDrill
         const answer = drill.a * drill.b
         if (n === answer) {
             // remove drill from pool
-            this.drills = this.drills.filter(d => (d.a !== drill.a) || (d.b !== drill.b))
-            this.setState({correctAnswers: this.state.correctAnswers + 1})
+            if (timeLeft > 0) {
+                this.drills = this.drills.filter(d => (d.a !== drill.a) || (d.b !== drill.b))
+                this.setState({ correctAnswers: this.state.correctAnswers + 1 }, this.getNextDrill)
+            }
+            // go to next drill but keep this on in pool
+            else {
+                this.getNextDrill()
+            }
+            
         }
+        // wrong answer
         else {
-
+            button.style.backgroundColor = "#FEC8D8"
+            setTimeout(() => {
+                button.style.backgroundColor = null
+            }, 500)
         }
-        this.getNextDrill()
     }
 
     render() {
         const drill = this.state.currentDrill
         const solutions = this.state.drillSolutions.map(n => {
             return (
-                <button className="button-answer" key={n} onClick={() => this.checkAnswer(n)}>{n}</button>
+                <button className="button-answer" key={n} onClick={(e) => this.checkAnswer(e, n)}>{n}</button>
             )
         })
         const correctAnswers = this.state.correctAnswers
+        let timeLeft = this.state.timeLeft
+        if (timeLeft <= 0) {
+            timeLeft = <span role="img" aria-label="sad face">&#128532;</span>
+        }
         return (
             <section className="game-container">
                 <div className="drill">{drill.a} &#215; {drill.b} = ?</div>
                 <div>{solutions}</div>
                 <progress id="progress" value={correctAnswers} max={this.totalDrills}></progress>
+                <div id="timer">{timeLeft}</div>
             </section>
         )
     }

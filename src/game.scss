@@ -17,10 +17,10 @@
         height: 5rem;
         margin: 1rem;
         cursor: pointer;
+        transition: background-color 1s;
     }
 
     progress {
-        margin-top: 1.8rem;
-        min-width: 30%;
+        margin: 1.8rem;
     }
 }
