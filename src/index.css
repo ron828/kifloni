@@ -103,7 +103,7 @@ progress::-moz-progress-bar {
 
 @media only screen and (max-width: 570px) {
   .card {
-    padding: 1.2rem 0;
+    padding: 2rem 0;
     width: 90%;
     min-width: unset;
   }

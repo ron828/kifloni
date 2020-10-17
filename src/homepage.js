@@ -58,7 +58,7 @@ class Homepage extends React.Component {
                                         {recordsTable}
                                     </tbody>
                                 </table>
-                                <button onClick={this.clearRecords}>אפס שיאים</button>
+                                <button onClick={this.clearRecords}>איפוס שיאים</button>
                             </div>
                         </section>
                     </Route>
