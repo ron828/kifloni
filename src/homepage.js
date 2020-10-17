@@ -45,7 +45,7 @@ class Homepage extends React.Component {
         return (
             <Router>
                 <Switch>
-                    <Route path="/שיאים">
+                    <Route path="/kifloni/שיאים">
                         <section id="records-container">
                             <div className="card">
                                 <h1>שיאים</h1>
@@ -67,7 +67,7 @@ class Homepage extends React.Component {
                             <div className="card">
                                 <h1>כִּפְלוֹנִי</h1>
                                 <button id="button-start" onClick={this.props.startGame}>התחלה</button>
-                                {records.length > 0 ? <Link to="/שיאים" className="link">שיאים</Link> : ''}
+                                {records.length > 0 ? <Link to="/kifloni/שיאים" className="link">שיאים</Link> : ''}
                             </div>
                         </section>
                     </Route>
