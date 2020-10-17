@@ -7,17 +7,26 @@ class GameOver extends React.Component {
     constructor() {
         super()
         this.recordsToKeep = 10
+        this.winSound = new Audio(win)
     }
 
     componentDidMount() {
-        let winSound = new Audio(win)
-        winSound.play()
+        this.celebrate()
+        this.storeRecord()
+    }
+
+    celebrate = () => {
+        if (this.winSound.paused) {
+            this.winSound.play()
+        }
+        else {
+            this.winSound.currentTime = 0
+        }
         window.confetti({
             particleCount: 100,
             spread: 70,
             origin: { y: 0.6 }
         });
-        this.storeRecord()
     }
 
     storeRecord() {
@@ -47,7 +56,9 @@ class GameOver extends React.Component {
         return (
             <section className="gameover-container">
                 <div className="card">
-                    <span role="img" aria-label="partying smiley">&#128526;</span>
+                    <button id="button-smiley" onClick={this.celebrate}>
+                        <span role="img" aria-label="partying smiley">&#128526;</span>
+                    </button>
                     {message}
                     <div id="mistakes">טעויות: {this.props.mistakes}</div>
                     <div className="buttons">

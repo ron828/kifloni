@@ -5,10 +5,15 @@
     justify-content: center;
     align-items: center;
 
-    span {
-        font-size: 10rem;
-    }
+    #button-smiley {
+        border: unset;
+        background: unset;
 
+        span {
+            font-size: 10rem;
+        }
+    }
+    
     .finished-message {
         font-size: 2rem;
         direction: rtl;
