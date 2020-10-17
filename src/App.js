@@ -13,14 +13,18 @@ class App extends React.Component {
   }
 
   startGame = () => {
-    this.setState({ started: true });
+    this.setState({ started: true })
+  }
+
+  stopGame = () => {
+    this.setState({ started: false })
   }
 
   render() {
     const started = this.state.started;
     return (
       <section className="app-container">
-        { !started ? <Homepage startGame={this.startGame} /> : <Game />}
+        { !started ? <Homepage startGame={this.startGame} /> : <Game stopGame={this.stopGame}/>}
       </section>
     );
   }

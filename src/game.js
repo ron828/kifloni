@@ -9,7 +9,7 @@ class Game extends React.Component {
         super()
 
         this.nStart = 3
-        this.nEnd = 12
+        this.nEnd = 3
         this.nSolutions = 3
         this.solutionsMaxDistance = 20
         this.timeToSolve = 10
@@ -20,6 +20,7 @@ class Game extends React.Component {
         this.quackSound = new Audio(quack)
         this.correctSound = new Audio(correct)
         this.startTime = null
+        this.mistakesMode = false
 
         this.cleanState = {
             totalDrills: 0,
@@ -40,10 +41,11 @@ class Game extends React.Component {
         this.initGame()
     }
 
-    startMistakesGame() {
+    initMistakesGame() {
         this.setState(this.cleanState)
         this.drills = this.mistakes
         this.mistakes = []
+        this.mistakesMode = true
         this.currentDrillWrong = false
         this.timerHandler = null
         this.startTime = performance.now()
@@ -57,6 +59,7 @@ class Game extends React.Component {
     initGame() {
         this.drills = []
         this.mistakes = []
+        this.mistakesMode = false
         this.currentDrillWrong = false
         this.timerHandler = null
         this.startTime = performance.now()
@@ -205,7 +208,7 @@ class Game extends React.Component {
 
     render() {
         if (this.state.gameOver) {
-            return <GameOver totalTime={this.state.totalTime} mistakes={this.mistakes.length} restart={() => this.resetGame()} restartMistakes={() => this.startMistakesGame()} />
+            return <GameOver totalTime={this.state.totalTime} mistakes={this.mistakes.length} mistakesMode={this.mistakesMode} restart={() => this.resetGame()} restartMistakes={() => this.initMistakesGame()} stopGame={this.props.stopGame} />
         }
         const totalDrills = this.state.totalDrills
         const drill = this.state.currentDrill

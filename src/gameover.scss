@@ -9,7 +9,7 @@
         font-size: 10rem;
     }
 
-    #total-time {
+    .finished-message {
         font-size: 2rem;
         direction: rtl;
         margin-top: 1rem;
@@ -29,8 +29,17 @@
         align-items: center;
         margin-top: 2rem;
 
-        #button-new-game {
-            margin-left: 1rem;
+        #button-mistakes {
+            margin-right: 1rem;
         }
+    }
+
+    .link-home {
+        font-size: 0.9rem;
+        border: none;
+        padding: 0;
+        margin: 0;
+        background: unset;
+        margin-top: 1.5rem;
     }
 }
