@@ -83,14 +83,11 @@ progress {
   -moz-appearance: none;
   appearance: none;
   border: none; 
-  background-color: transparent;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.85);
+  background-color: rgba(0,0,0,0.2);
 }
 
 progress[value]::-webkit-progress-bar {
   background-color: transparent;
-  box-shadow: 0 0 0 1px rgba(255,255,255,0.85);
-  border-radius: 2px;
 }
  
 progress[value]::-webkit-progress-value {
