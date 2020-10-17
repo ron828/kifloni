@@ -67,6 +67,7 @@ button:hover {
   border: 1px solid rgba(0,0,0,0);
   border-radius: 2px;
   padding: 2rem 6rem;
+  min-width: 500px;
 }
 
 .link {
@@ -79,7 +80,11 @@ button:hover {
 }
 
 progress {
+  -moz-appearance: none;
   appearance: none;
+  border: none; 
+  background-color: transparent;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.85);
 }
 
 progress[value]::-webkit-progress-bar {
@@ -92,9 +97,14 @@ progress[value]::-webkit-progress-value {
   background-color: #a4d0ff;
 }
 
+progress::-moz-progress-bar {
+  background-color: #a4d0ff !important;
+}
+
 @media only screen and (max-width: 700px) {
   .card {
     padding: 1rem 0;
     width: 90%;
+    min-width: unset;
   }
 }
