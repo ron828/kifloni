@@ -7,7 +7,7 @@
     align-items: center;
 
     .drill {
-        font-size: 2rem;
+        font-size: 3rem;
     }
 
     #solutions {
@@ -18,18 +18,45 @@
         margin-top: 2rem;
 
         .button-answer {
-            font-size: 1.2rem;
-            min-width: 4.2rem;
-            min-height: 3rem;
+            font-size: 1.5rem;
+            min-width: 5rem;
             margin: 0 0.8rem;
         }
     }
 
     progress {
-       margin-top: 2rem;
+       margin-top: 2.5rem;
     }
 
     #timer {
-       margin-top: 1rem; 
+        font-size: 1.3rem;
+        margin-top: 1.2rem; 
     }
 }
+
+@media only screen and (max-width: 570px) {
+    .game-container {
+        .drill {
+            font-size: 2rem;
+        }
+
+        #solutions {
+            margin-top: 1.8rem;
+
+            .button-answer {
+                font-size: 1.1rem;
+                min-width: 4.3rem;
+                margin: 0 0.8rem;
+            }
+        }  
+
+        progress {
+            margin-top: 2rem;
+        }
+
+        #timer {
+            font-size: 1.1rem;
+            margin-top: 1rem; 
+        }
+    }
+  }

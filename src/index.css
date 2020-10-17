@@ -66,7 +66,7 @@ button:hover {
   background-color: rgba(0,0,0,0.2);
   border: 1px solid rgba(0,0,0,0);
   border-radius: 2px;
-  padding: 2rem 6rem;
+  padding: 2.5rem 6rem;
   min-width: 500px;
 }
 
@@ -101,9 +101,9 @@ progress::-moz-progress-bar {
   background-color: #a4d0ff !important;
 }
 
-@media only screen and (max-width: 700px) {
+@media only screen and (max-width: 570px) {
   .card {
-    padding: 1rem 0;
+    padding: 1.2rem 0;
     width: 90%;
     min-width: unset;
   }
