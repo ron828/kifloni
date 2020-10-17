@@ -25,6 +25,13 @@ class Homepage extends React.Component {
         }
     }
 
+    clearRecords = () => {
+        localStorage.setItem("records", "[]")
+        this.setState({
+            records: []
+        }, window.history.back())
+    }
+
     render() {
         let records = this.state.records
         let recordsTable = records.map((r, index) => {
@@ -51,6 +58,7 @@ class Homepage extends React.Component {
                                         {recordsTable}
                                     </tbody>
                                 </table>
+                                <button onClick={this.clearRecords}>אפס שיאים</button>
                             </div>
                         </section>
                     </Route>
