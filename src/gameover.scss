@@ -8,6 +8,11 @@
     #button-smiley {
         border: unset;
         background: unset;
+        -webkit-tap-highlight-color: transparent;
+
+        &:focus {
+            outline: none;
+        }
 
         span {
             font-size: 10rem;
