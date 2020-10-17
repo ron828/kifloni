@@ -22,7 +22,7 @@ class GameOver extends React.Component {
                     <div id="total-time">זמן כולל: {this.props.totalTime} שניות</div>
                     <div id="mistakes">טעויות: {this.props.mistakes}</div>
                     <div className="buttons">
-                        <button onClick={this.props.restart}>משחק חדש</button>
+                        <button id="button-new-game" onClick={this.props.restart}>משחק חדש</button>
                         {this.props.mistakes > 0 ? <button onClick={this.props.restartMistakes}>חזרה על טעויות</button> : ''}
                     </div>
                 </div>

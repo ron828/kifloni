@@ -162,6 +162,7 @@ class Game extends React.Component {
     checkAnswer(event, n) {
         const timeLeft = this.state.timeLeft
         var button = event.target
+        button.blur()
         const drill = this.state.currentDrill
         const answer = drill.a * drill.b
         if (n === answer) {
@@ -194,8 +195,10 @@ class Game extends React.Component {
             this.currentDrillWrong = true
             this.quackSound.play()
             button.style.backgroundColor = "#FEC8D8"
+            button.style.color = "#000"
             setTimeout(() => {
                 button.style.backgroundColor = null
+                button.style.color = null
             }, 500)
         }
     }

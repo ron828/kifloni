@@ -7,7 +7,6 @@
     align-items: center;
 
     .drill {
-        margin: 1.5rem;
         font-size: 2rem;
     }
 
@@ -16,19 +15,21 @@
         justify-content: center;
         align-items: center;
         flex-wrap: wrap;
-    }
+        margin-top: 2rem;
 
-    .button-answer {
-        font-size: 1.2rem;
-        min-width: 4rem;
-        min-height: 3rem;
+        .button-answer {
+            font-size: 1.2rem;
+            min-width: 4rem;
+            min-height: 3rem;
+            margin: 0 0.9rem;
+        }
     }
 
     progress {
-        margin: 1.8rem;
+       margin-top: 2rem;
     }
 
     #timer {
-        margin-bottom: 1rem;
+       margin-top: 1rem; 
     }
 }

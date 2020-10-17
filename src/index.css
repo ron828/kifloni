@@ -33,7 +33,6 @@ button {
   background-color: rgba(255,255,255,0.125);
   border: 1px solid transparent;
   padding: .6rem 1rem;
-  margin: 1rem;
   font-size: 1rem;
   line-height: 1.5;
   border-radius: 2px;
@@ -52,7 +51,7 @@ button:hover {
   background-color: rgba(0,0,0,0.2);
   border: 1px solid rgba(0,0,0,0);
   border-radius: 2px;
-  padding: 2rem 10rem;
+  padding: 2rem 8rem;
 }
 
 progress {
@@ -71,7 +70,7 @@ progress[value]::-webkit-progress-value {
 
 @media only screen and (max-width: 700px) {
   .card {
-    padding: 0;
+    padding: 1rem 0;
     width: 90%;
   }
 }
