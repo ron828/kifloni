@@ -124,19 +124,39 @@ class Game extends React.Component {
         return solutions
     }
 
+    storeMistakes() {
+        let storedMapStr = localStorage.getItem("mistakes") || "[]"
+        let storedMap = new Map(JSON.parse(storedMapStr))
+        this.mistakes.forEach(drill => {
+
+            // normalize drill - first small term then big term
+            if (drill.a > drill.b) {
+                drill = { a: drill.b, b: drill.a }
+            }
+            let key = JSON.stringify(drill)
+            let n = storedMap.get(key) || 0
+            storedMap.set(key, n + 1)
+        });
+        localStorage.setItem("mistakes", JSON.stringify([...storedMap]))
+    }
+
+    gameOver() {
+        let end = performance.now()
+        let timeElapsed = end - this.startTime
+        timeElapsed = Math.floor(timeElapsed / 1000)
+        this.storeMistakes()
+        this.setState({
+            gameOver: true,
+            totalTime: timeElapsed
+        })
+    }
+
     getNextDrill() {
         if (this.timerHandler) {
             clearInterval(this.timerHandler)
         }
         if (this.drills.length === 0) {
-            let end = performance.now()
-            let timeElapsed = end - this.startTime
-            timeElapsed = Math.floor(timeElapsed / 1000)
-            this.setState({
-                gameOver: true,
-                totalTime: timeElapsed
-            })
-            return
+            return this.gameOver()
         }
         this.currentDrillWrong = false
         let drill = this.getRandomDrill()
