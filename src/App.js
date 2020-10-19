@@ -8,23 +8,25 @@ class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      started: false
+      started: false,
+      mode: "normal"
     };
   }
 
-  startGame = () => {
-    this.setState({ started: true })
+  startGame = (mode) => {
+    this.setState({ started: true, mode: mode })
   }
 
   stopGame = () => {
-    this.setState({ started: false })
+    this.setState({ started: false, mode: "normal" })
   }
 
   render() {
     const started = this.state.started;
+    const mode = this.state.mode;
     return (
       <section className="app-container">
-        { !started ? <Homepage startGame={this.startGame} /> : <Game stopGame={this.stopGame}/>}
+        { !started ? <Homepage startGame={this.startGame} /> : <Game mode={mode} stopGame={this.stopGame} />}
       </section>
     );
   }

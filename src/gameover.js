@@ -30,7 +30,7 @@ class GameOver extends React.Component {
     }
 
     storeRecord() {
-        if (!this.props.mistakesMode) {
+        if (this.props.mode === "normal") {
             let recordsStr = localStorage.getItem("records")
             let records = []
             if (recordsStr) {
@@ -47,7 +47,7 @@ class GameOver extends React.Component {
 
     render() {
         let message
-        if (this.props.mistakesMode) {
+        if (this.props.mode !== "normal") {
             message = <div className="finished-message">כל הכבוד!</div>
         }
         else {

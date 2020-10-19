@@ -58,6 +58,11 @@ button:hover {
   color: #a4d0ff;
 }
 
+.top-container {
+  height: 100%;
+  width: 100%
+}
+
 .card {
   display: flex;
   flex-direction: column;
@@ -71,8 +76,11 @@ button:hover {
 }
 
 .link {
+  border: unset;
+  background: unset;
   text-decoration: none;
   color: #a4d0ff;
+  padding: 0;
 }
 
 .link:hover {

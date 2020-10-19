@@ -8,7 +8,7 @@ class Game extends React.Component {
     constructor() {
         super()
 
-        this.nStart = 3
+        this.nStart = 2
         this.nEnd = 12
         this.nSolutions = 3
         this.solutionsMaxDistance = 20
@@ -20,7 +20,7 @@ class Game extends React.Component {
         this.quackSound = new Audio(quack)
         this.correctSound = new Audio(correct)
         this.startTime = null
-        this.mistakesMode = false
+        this.mode = null
 
         this.cleanState = {
             totalDrills: 0,
@@ -38,50 +38,55 @@ class Game extends React.Component {
     componentDidMount() {
         this.quackSound.load()
         this.correctSound.load()
-        this.initGame()
+        this.mode = this.props.mode
+        this.newGame(this.mode)
     }
 
-    initMistakesGame() {
+    // mode: normal, mistakes, practice
+    newGame(mode) {
         this.setState(this.cleanState)
-        this.drills = this.mistakes
-        this.mistakes = []
-        this.mistakesMode = true
-        this.currentDrillWrong = false
-        this.timerHandler = null
-        this.startTime = performance.now()
-        this.setState({
-            totalDrills: this.drills.length
-        },
-            this.getNextDrill
-        )
-    }
-
-    initGame() {
         this.drills = []
-        this.mistakes = []
+        this.mode = "normal"
         this.mistakesMode = false
+        this.practiceMode = false
         this.currentDrillWrong = false
         this.timerHandler = null
-        this.startTime = performance.now()
-        for (let i = this.nStart; i <= this.nEnd; i++) {
-            for (let j = i; j <= this.nEnd; j++) {
-                let drill = { a: i, b: j }
-                if (Math.round(Math.random())) {
-                    drill = { a: j, b: i }
+
+        if (mode === "normal") {
+            for (let i = this.nStart; i <= this.nEnd; i++) {
+                for (let j = i; j <= this.nEnd; j++) {
+                    let drill = { a: i, b: j }
+                    if (Math.round(Math.random())) {
+                        drill = { a: j, b: i }
+                    }
+                    this.drills.push(drill)
                 }
-                this.drills.push(drill)
             }
         }
+        else if (mode === "mistakes") {
+            this.mode = "mistakes"
+            this.drills = this.mistakes
+        }
+        else if (mode === "practice") {
+            this.mode = "practice"
+            let mistakesStr = localStorage.getItem("mistakes") || "[]"
+            let mistakes = JSON.parse(mistakesStr).sort((a, b) => b[1] - a[1])
+            if (mistakes.length > 10) {
+                mistakes = mistakes.slice(0, 10)
+            }
+            mistakes = mistakes.map(arr => {
+                return JSON.parse(arr[0])
+            })
+            this.drills = mistakes
+        }
+
+        this.mistakes = []
         this.setState({
             totalDrills: this.drills.length
         },
             this.getNextDrill
         )
-    }
-
-    resetGame() {
-        this.setState(this.cleanState)
-        this.initGame()
+        this.startTime = performance.now()
     }
 
     getRandomDrill() {
@@ -228,7 +233,7 @@ class Game extends React.Component {
 
     render() {
         if (this.state.gameOver) {
-            return <GameOver totalTime={this.state.totalTime} mistakes={this.mistakes.length} mistakesMode={this.mistakesMode} restart={() => this.resetGame()} restartMistakes={() => this.initMistakesGame()} stopGame={this.props.stopGame} />
+            return <GameOver totalTime={this.state.totalTime} mistakes={this.mistakes.length} mode={this.mode} restart={() => this.newGame("normal")} restartMistakes={() => this.newGame("mistakes")} stopGame={this.props.stopGame} />
         }
         const totalDrills = this.state.totalDrills
         const drill = this.state.currentDrill
