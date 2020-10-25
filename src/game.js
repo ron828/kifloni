@@ -8,7 +8,7 @@ class Game extends React.Component {
     constructor() {
         super()
 
-        this.nStart = 2
+        this.nStart = 3
         this.nEnd = 12
         this.nSolutions = 3
         this.solutionsMaxDistance = 20

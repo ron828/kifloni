@@ -66,13 +66,15 @@ button:hover {
 .card {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   background-color: rgba(0,0,0,0.2);
   border: 1px solid rgba(0,0,0,0);
   border-radius: 2px;
   padding: 2.5rem 6rem;
   min-width: 500px;
+  max-height: 95%;
+  overflow: auto;
 }
 
 .link {
