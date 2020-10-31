@@ -32,14 +32,14 @@ class Homepage extends React.Component {
         localStorage.setItem("records", "[]")
         this.setState({
             records: []
-        }, window.history.back())
+        })
     }
 
     clearMistakes = () => {
         localStorage.setItem("mistakes", "[]")
         this.setState({
             mistakes: []
-        }, window.history.back())
+        })
     }
 
     changeView(view) {
